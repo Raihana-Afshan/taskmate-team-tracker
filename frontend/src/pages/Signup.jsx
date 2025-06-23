@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const Signup = () => {
   const [form, setForm] = useState({
@@ -12,7 +13,7 @@ const Signup = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!form.email || !form.password || !form.confirmPassword) {
@@ -25,9 +26,19 @@ const Signup = () => {
       return;
     }
 
+    
+  try {
+    await axios.post("http://localhost:5500/users", {
+      email: form.email.toLowerCase(),
+      password: form.password,
+    });
+    alert("Signup successful!");
+    setForm({ email: "", password: "", confirmPassword: "" });
     setError("");
-    alert("Signup successful! (Next: Connect to backend)");
-  };
+  } catch (err) {
+    setError("Something went wrong. Try again.");
+  }
+};
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
