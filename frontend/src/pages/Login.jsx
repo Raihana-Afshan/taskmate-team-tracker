@@ -1,12 +1,13 @@
 // src/pages/Login.jsx
 import { useState } from "react";
+import axios from "axios";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -15,7 +16,25 @@ export default function Login() {
       return;
     }
 
-    alert("Login submitted (placeholder).");
+    try {
+      const res = await axios.get("http://localhost:5500/users", {
+        params: {
+          email,
+          password,
+        },
+      });
+
+      if (res.data.length > 0) {
+        alert("Login successful!");
+        setEmail("");
+        setPassword("");
+        setError("");
+      } else {
+        setError("Invalid credentials. Please try again.");
+      }
+    } catch (err) {
+      setError("Error connecting to server. Please try again later.");
+    }
   };
 
   return (
@@ -54,12 +73,11 @@ export default function Login() {
           >
             Login
           </button>
-        
-        <p className="text-sm mt-4 text-center">
-  Don’t have an account?{" "}
-  <a href="/signup" className="text-blue-600 hover:underline">Sign up</a>
-</p>
 
+          <p className="text-sm mt-4 text-center">
+            Don’t have an account?{" "}
+            <a href="/signup" className="text-blue-600 hover:underline">Sign up</a>
+          </p>
         </form>
       </div>
     </div>
