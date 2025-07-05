@@ -28,7 +28,7 @@ const Signup = () => {
 
     
   try {
-    await axios.post("http://localhost:5500/users", {
+    await axios.post("http://localhost:8080/api/users/signup", {
       email: form.email.toLowerCase(),
       password: form.password,
     });
@@ -36,8 +36,8 @@ const Signup = () => {
     setForm({ email: "", password: "", confirmPassword: "" });
     setError("");
   } catch (err) {
-    setError("Something went wrong. Try again.");
-  }
+  setError(err.response?.data || "Something went wrong. Try again.");
+}
 };
 
   return (

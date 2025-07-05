@@ -1,0 +1,4 @@
+{
+    "java.configuration.enableAnnotationProcessing": true,
+    "java.compile.nullAnalysis.mode": "automatic"
+}
